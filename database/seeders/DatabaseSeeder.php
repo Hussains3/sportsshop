@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Category;
+use App\Models\SubCategory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +15,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create admin user
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin',
+            'email' => 'admin@app.com',
+            'password' => bcrypt('admin123'),
         ]);
+
+        // Create admin user
+        if (User::count() === 0) {
+            User::factory()->create([
+                'name' => 'Admin',
+                'email' => 'admin@app.com',
+                'password' => bcrypt('admin123'),
+            ]);
+        }
+
+                // Run the CategorySeeder first
+        $this->call(CategorySeeder::class);
+
+        // Then run the SubCategorySeeder
+        $this->call(SubCategorySeeder::class);
+
+        // Finally, run the ProductSeeder
+        $this->call(ProductSeeder::class);
     }
 }

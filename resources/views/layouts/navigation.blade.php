@@ -12,14 +12,112 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link> --}}
+                    <x-nav-link :href="route('pos.index')" :active="request()->routeIs('pos.index')">
+                        {{ __('POS') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('pos.sales')" :active="request()->routeIs('pos.sales')">
+                        {{ __('Sales History') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                        {{ __('Categories') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('subcategories.index')" :active="request()->routeIs('subcategories.*')">
+                        {{ __('Subcategories') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                        {{ __('Products') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('batches.index')" :active="request()->routeIs('batches.*')">
+                        {{ __('Batches') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                        {{ __('Reports') }}
                     </x-nav-link>
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <!-- Dark mode toggle dropdown -->
+                <div class="relative mr-3"
+                    x-data="{ open: false }"
+                >
+                    <!-- Theme toggle button -->
+                    <button
+                        @click="open = !open"
+                        type="button"
+                        class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none rounded-md"
+                        aria-haspopup="true"
+                        :aria-expanded="open"
+                    >
+                        <!-- Light mode icon -->
+                        <svg x-show="$store.theme.mode === 'light'" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <!-- Dark mode icon -->
+                        <svg x-show="$store.theme.mode === 'dark'" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                        <!-- System mode icon -->
+                        <svg x-show="$store.theme.mode === 'system'" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+
+                    <!-- Theme selector dropdown -->
+                    <div
+                        x-show="open"
+                        @click.away="open = false"
+                        class="absolute right-0 mt-2 w-48 py-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700"
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                    >
+                        <button
+                            @click="$store.theme.setMode('light'); open = false"
+                            class="w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            :class="{ 'bg-gray-100 dark:bg-gray-700': $store.theme.mode === 'light' }"
+                        >
+                            <div class="flex items-center">
+                                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Light
+                            </div>
+                        </button>
+                        <button
+                            @click="$store.theme.setMode('dark'); open = false"
+                            class="w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            :class="{ 'bg-gray-100 dark:bg-gray-700': $store.theme.mode === 'dark' }"
+                        >
+                            <div class="flex items-center">
+                                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                </svg>
+                                Dark
+                            </div>
+                        </button>
+                        <button
+                            @click="$store.theme.setMode('system'); open = false"
+                            class="w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            :class="{ 'bg-gray-100 dark:bg-gray-700': $store.theme.mode === 'system' }"
+                        >
+                            <div class="flex items-center">
+                                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                System
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -69,6 +167,15 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('pos.index')" :active="request()->routeIs('pos.*')">
+                {{ __('POS') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('pos.sales')" :active="request()->routeIs('pos.sales')">
+                {{ __('Sales History') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                {{ __('Categories') }}
             </x-responsive-nav-link>
         </div>
 

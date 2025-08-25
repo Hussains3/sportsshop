@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom Scrollbar Styles */
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+
+::-webkit-scrollbar-corner {
+    background: #f1f5f9;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #f1f5f9;
+}
+
+/* Dark mode support */
+.dark ::-webkit-scrollbar-track {
+    background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+
+.dark ::-webkit-scrollbar-corner {
+    background: #374151;
+}
+
+.dark * {
+    scrollbar-color: #3b82f6 #374151;
+}
