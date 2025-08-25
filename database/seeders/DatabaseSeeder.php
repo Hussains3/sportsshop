@@ -15,23 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@app.com',
-            'password' => bcrypt('admin123'),
-        ]);
+        // Run the RolePermissionSeeder first to set up roles and permissions
+        $this->call(RolePermissionSeeder::class);
 
-        // Create admin user
-        if (User::count() === 0) {
-            User::factory()->create([
-                'name' => 'Admin',
-                'email' => 'admin@app.com',
-                'password' => bcrypt('admin123'),
-            ]);
-        }
-
-                // Run the CategorySeeder first
+        // Run the CategorySeeder
         $this->call(CategorySeeder::class);
 
         // Then run the SubCategorySeeder

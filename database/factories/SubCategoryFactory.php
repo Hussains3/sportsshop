@@ -31,20 +31,13 @@ class SubCategoryFactory extends Factory
             'Combat Sports' => ['Boxing Gloves', 'Punching Bags', 'Protective Gear', 'Training Gear']
         ];
 
-        $category = Category::find($this->category_id ?? Category::inRandomOrder()->first()->id);
-        $subcategories = $subcategoriesByCategory[$category->name] ?? array_merge(...array_values($subcategoriesByCategory));
-        $name = fake()->unique(true)->randomElement($subcategories);
+        // Select a random subcategory name from all available options
+        $allSubcategories = array_merge(...array_values($subcategoriesByCategory));
+        $name = fake()->unique(true)->randomElement($allSubcategories);
         $slug = str()->slug($name);
 
-        // Ensure unique slug by appending a number if necessary
-        $count = 1;
-        $originalSlug = $slug;
-        while (SubCategory::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $count++;
-        }
-
         return [
-            'category_id' => $category->id,
+            'category_id' => Category::factory(),
             'name' => $name,
             'slug' => $slug,
             'description' => fake()->paragraph(),

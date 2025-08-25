@@ -136,6 +136,52 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        @can('view-users')
+                            <!-- Divider -->
+                            <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                            
+                            <!-- Admin Section -->
+                            <div class="px-4 py-2">
+                                <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    {{ __('Administration') }}
+                                </div>
+                            </div>
+                            
+                            <x-dropdown-link :href="route('users.index')">
+                                <div class="flex items-center">
+                                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-2.239" />
+                                    </svg>
+                                    {{ __('User Management') }}
+                                </div>
+                            </x-dropdown-link>
+                        @endcan
+
+                        @can('manage-roles')
+                            <x-dropdown-link :href="route('admin.roles')">
+                                <div class="flex items-center">
+                                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    {{ __('Role Management') }}
+                                </div>
+                            </x-dropdown-link>
+                        @endcan
+
+                        @can('manage-permissions')
+                            <x-dropdown-link :href="route('admin.permissions')">
+                                <div class="flex items-center">
+                                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                    {{ __('Permission Management') }}
+                                </div>
+                            </x-dropdown-link>
+                        @endcan
+
+                        <!-- Divider -->
+                        <div class="border-t border-gray-200 dark:border-gray-600"></div>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -191,8 +237,33 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
+                @can('view-users')
+                    <!-- Admin Section Header -->
+                    <div class="px-4 pt-4 pb-2">
+                        <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            {{ __('Administration') }}
+                        </div>
+                    </div>
+                    
+                    <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                        {{ __('User Management') }}
+                    </x-responsive-nav-link>
+                @endcan
+
+                @can('manage-roles')
+                    <x-responsive-nav-link :href="route('admin.roles')" :active="request()->routeIs('admin.roles*')">
+                        {{ __('Role Management') }}
+                    </x-responsive-nav-link>
+                @endcan
+
+                @can('manage-permissions')
+                    <x-responsive-nav-link :href="route('admin.permissions')" :active="request()->routeIs('admin.permissions*')">
+                        {{ __('Permission Management') }}
+                    </x-responsive-nav-link>
+                @endcan
+
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" class="mt-4">
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
